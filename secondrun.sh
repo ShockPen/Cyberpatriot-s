@@ -1,12 +1,30 @@
 #Set users to user
 echo "Changing everyone to correct user admin confiuration"
 USERS=(
-  ""
+  "mross"
+  "kbennet"
+  "pporter"
+  "baltman"
+  "rzane"
+  "scarter"
+  "dpaulson"
+  "gbodinski"
+  "kdurant"
+  "hgunderson"
+  "jkirkwood"
+  "skeller"
+  "zlawford"
 )
 
 ADMINS=(
-  ""
+  "jpearson"
+  "rzane2"
+  "hspecter"
+  "llitt"
+  "awilliams"
+  "swheeler"
 )
+
 
 for usr in "${USERS[@]}"; do
   sudo gpasswd -d "$usr" sudo
