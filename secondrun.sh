@@ -1,3 +1,5 @@
+#!bin/bash
+
 #Set users to user
 echo "Changing everyone to correct user admin confiuration"
 USERS=(
@@ -32,8 +34,8 @@ for usr in "${USERS[@]}"; do
 done
 
 for ad in "${ADMINS[@]}"; do
-  sudo usermod -aG sudo $ad
-  sudo usermod -aG admin $ad
+  sudo usermod -aG sudo "$ad"
+  sudo usermod -aG admin "$ad"
 done 
 
 # Remove apps
