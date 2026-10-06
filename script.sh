@@ -7,11 +7,13 @@ sudo apt install bum
 
 echo "changing file settings"
 #Standard files edits for safer settings
+echo 'net.ipv4.ip_forward=0' > /etc/sysctl.conf
 sudo sed -i '/^net.ipv4.tcp_syncookies/d' /etc/sysctl.conf && echo "net.ipv4.tcp_syncookies=1" | sudo tee -a /etc/sysctl.conf
 sudo sed -i 's/^PASS_MAX_DAYS.*/PASS_MAX_DAYS   30/' /etc/login.defs
 sudo sed -i 's/^PASS_MIN_DAYS.*/PASS_MIN_DAYS   7/' /etc/login.defs
+sudo sed -i 's/^PASS_WARN_AGE.*/PASS_WARN_AGE   14/' /etc/login.defs
 
-#grub and shadow safe settings
+#grub and shadow safe access settings
 sudo chmod /etc/shadow 600
 sudo chmod /boot/grub/grub.cfg 644
 
@@ -21,7 +23,7 @@ find /home -type f \( -iname "*.mp3" -o -iname "*.mp4" -o -iname "*.avi" -o -ina
 
 #Pass change
 echo "Changing all passwords to safer ones"
-NEW_PASS="Cyberpat2025!"
+NEW_PASS="Cyberpat2026!"
 CURRENT_USER=$(whoami)
 for user in $(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd); do
     if [ "$user" != "$CURRENT_USER" ]; then
@@ -85,11 +87,21 @@ sudo systemctl stop nmbd
 sudo systemctl disable nmbd
 
 #security updates
-echo "Periodic security updates"
+echo "Periodic security updates that we lowk always end up scrambling for (still check)"
 sudo apt-get update
 sudo apt-get install -y unattended-upgrades
 sudo dpkg-reconfigure -plow unattended-upgrades
 
-echo "Finally update everything"
+echo "Getting clamav"
+sudo apt-get install clamav
+
+echo "Now, update everything"
 sudo apt update
 sudo apt upgrade
+
+echo "Check apache and ssh"
+sudo systemctl status apache2
+sudo systemctl status ssh
+
+echo "Using clamav for virus scan"
+
